@@ -48,3 +48,23 @@ def get_character(char_id):
         "knowledge": row[4],
         "restrictions": row[5]
     }
+
+def seed_default_character():
+    """Seeds Priya with a fixed ID if she doesn't already exist."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM characters WHERE id = 'priya-demo'")
+    if not cursor.fetchone():
+        cursor.execute(
+            "INSERT INTO characters VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                "priya-demo",
+                "Priya",
+                json.dumps(["friendly", "patient", "knowledgeable"]),
+                "warm and professional",
+                "We are a SaaS billing platform. Plans range from ₹999 to ₹9999/month. Refunds processed within 7 business days.",
+                "Don't discuss competitor pricing"
+            )
+        )
+        conn.commit()
+    conn.close()

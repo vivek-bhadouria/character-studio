@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import anthropic
 from backend.prompt_builder import build_character_prompt
-from backend.database import init_db, create_character, get_character
+from backend.database import init_db, create_character, get_character, seed_default_character
 
 load_dotenv()
 
@@ -23,6 +23,7 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 # Initialize DB on startup
 init_db()
+seed_default_character()
 
 class Message(BaseModel):
     role: str

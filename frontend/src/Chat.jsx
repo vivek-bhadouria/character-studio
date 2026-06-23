@@ -15,7 +15,7 @@ function Chat() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/chat/41167915`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/chat/priya-demo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
