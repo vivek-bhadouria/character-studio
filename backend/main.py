@@ -25,6 +25,10 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 init_db()
 seed_default_character()
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 class Message(BaseModel):
     role: str
     content: str
