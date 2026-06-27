@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 function Chat() {
   const [messages, setMessages] = useState([]);
@@ -28,7 +29,6 @@ function Chat() {
       });
 
       if (!response.ok) throw new Error('Request failed');
-
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'assistant', text: data.reply }]);
     } catch (err) {
@@ -39,22 +39,78 @@ function Chat() {
   };
 
   return (
-    <div>
-      <h2>Chat with Priya</h2>
-      <div>
+    <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
+      <h2 style={{ textAlign: 'center' }}>Chat with Priya</h2>
+
+      <div style={{
+        height: '500px',
+        overflowY: 'auto',
+        border: '1px solid #eee',
+        borderRadius: '8px',
+        padding: '16px',
+        marginBottom: '16px',
+        backgroundColor: '#fafafa'
+      }}>
         {messages.map((msg, i) => (
-          <p key={i}><strong>{msg.role}:</strong> {msg.text}</p>
+          <div key={i} style={{
+            marginBottom: '12px',
+            textAlign: msg.role === 'user' ? 'right' : 'left'
+          }}>
+            <div style={{
+              display: 'inline-block',
+              maxWidth: '75%',
+              padding: '10px 14px',
+              borderRadius: '12px',
+              backgroundColor: msg.role === 'user' ? '#0070f3' : '#fff',
+              color: msg.role === 'user' ? '#fff' : '#333',
+              border: msg.role === 'assistant' ? '1px solid #eee' : 'none',
+              textAlign: 'left'
+            }}>
+              {msg.role === 'assistant'
+                ? <ReactMarkdown>{msg.text}</ReactMarkdown>
+                : msg.text
+              }
+            </div>
+          </div>
         ))}
-        {loading && <p><em>Priya is typing...</em></p>}
+        {loading && (
+          <div style={{ color: '#999', fontStyle: 'italic' }}>
+            Priya is typing...
+          </div>
+        )}
       </div>
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-        placeholder="Type a message..."
-        disabled={loading}
-      />
-      <button onClick={sendMessage} disabled={loading}>Send</button>
+
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          placeholder="Type a message..."
+          disabled={loading}
+          style={{
+            flex: 1,
+            padding: '10px 14px',
+            borderRadius: '8px',
+            border: '1px solid #ddd',
+            fontSize: '14px'
+          }}
+        />
+        <button
+          onClick={sendMessage}
+          disabled={loading}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#0070f3',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }

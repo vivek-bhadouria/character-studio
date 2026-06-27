@@ -50,21 +50,56 @@ def get_character(char_id):
     }
 
 def seed_default_character():
-    """Seeds Priya with a fixed ID if she doesn't already exist."""
+    """Seeds Priya with a fixed ID. Deletes and recreates to pick up knowledge base changes."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM characters WHERE id = 'priya-demo'")
-    if not cursor.fetchone():
-        cursor.execute(
-            "INSERT INTO characters VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                "priya-demo",
-                "Priya",
-                json.dumps(["friendly", "patient", "knowledgeable"]),
-                "warm and professional",
-                "We are a SaaS billing platform. Plans range from ₹999 to ₹9999/month. Refunds processed within 7 business days.",
-                "Don't discuss competitor pricing"
-            )
+    # Delete and recreate to pick up knowledge base changes
+    cursor.execute("DELETE FROM characters WHERE id = 'priya-demo'")
+    cursor.execute(
+        "INSERT INTO characters VALUES (?, ?, ?, ?, ?, ?)",
+        (
+            "priya-demo",
+            "Priya",
+            json.dumps(["friendly", "patient", "knowledgeable", "professional"]),
+            "warm and professional",
+            """
+COMPANY: BillEase — SaaS billing and invoicing platform for Indian businesses.
+
+PLANS & PRICING:
+- Starter Plan: ₹999/month — up to 3 users, 50 invoices/month, basic reporting, email support
+- Growth Plan: ₹2,999/month — up to 10 users, unlimited invoices, advanced reporting, priority email support, GST filing integration
+- Business Plan: ₹5,999/month — up to 25 users, unlimited invoices, API access, custom branding, phone + email support
+- Enterprise Plan: ₹9,999/month — unlimited users, unlimited invoices, dedicated account manager, SLA guarantee, custom integrations
+- Annual billing available with 20% discount on all plans
+
+REFUND POLICY:
+- Refunds processed within 7 business days
+- Refund requests accepted within 30 days of purchase
+- Annual plan refunds are prorated based on unused months
+- No refunds after 30 days
+
+FEATURES (all plans):
+- GST-compliant invoicing
+- Automatic payment reminders
+- Multi-currency support
+- Mobile app (iOS and Android)
+- Bank reconciliation
+- Customer payment portal
+
+GETTING STARTED:
+- Free 14-day trial available, no credit card required
+- Setup takes under 30 minutes
+- Onboarding support included for Growth plan and above
+- Data import from Tally, Zoho Books, and QuickBooks supported
+
+SUPPORT:
+- Email: support@billease.in
+- Phone support: Mon–Fri, 9am–6pm IST (Business and Enterprise plans)
+- Help center: help.billease.in
+- Average response time: 4 hours for email, immediate for phone
+""",
+            "Don't discuss competitor products or pricing. Don't make up features or pricing not listed above."
         )
-        conn.commit()
+    )
+    conn.commit()
     conn.close()
