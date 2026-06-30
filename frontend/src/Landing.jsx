@@ -22,7 +22,7 @@ function Landing() {
           Character Studio
         </div>
         <button
-          onClick={() => navigate('/chat')}
+          onClick={() => navigate('/chat/priya-demo')}
           style={{
             padding: '8px 20px',
             backgroundColor: '#0070f3',
@@ -84,19 +84,34 @@ function Landing() {
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
           <button
-            onClick={() => navigate('/chat')}
-            style={{
-              padding: '14px 32px',
-              backgroundColor: '#0070f3',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: '600'
-            }}
-          >
-            Talk to Priya — Live Demo
+onClick={() => navigate('/chat/priya-demo')}
+          style={{
+            padding: '14px 32px',
+            backgroundColor: '#0070f3',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '600'
+          }}
+        >
+          Talk to Priya — Live Demo
+        </button>
+        <button
+          onClick={() => navigate('/create')}
+          style={{
+            padding: '14px 32px',
+            backgroundColor: '#fff',
+            color: '#0070f3',
+            border: '2px solid #0070f3',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '600'
+          }}
+        >
+          Create Your Own Agent →
           </button>
         </div>
 
@@ -161,7 +176,7 @@ function Landing() {
           Priya is a demo agent for a SaaS billing platform. Talk to her.
         </p>
         <button
-          onClick={() => navigate('/chat')}
+          onClick={() => navigate('/chat/priya-demo')}
           style={{
             padding: '14px 32px',
             backgroundColor: '#fff',

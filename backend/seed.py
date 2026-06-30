@@ -1,8 +1,8 @@
-from backend.database import init_db, create_character
+from backend.database import init_db, create_character_db
 
 init_db()
 
-char_id = create_character(
+char_id = create_character_db(
     name="Priya",
     personality_traits=["friendly", "patient", "knowledgeable"],
     tone="warm and professional",

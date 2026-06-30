@@ -20,7 +20,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-def create_character(name, personality_traits, tone, knowledge, restrictions=None):
+def create_character_db(name, personality_traits, tone, knowledge, restrictions=None):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     char_id = str(uuid.uuid4())[:8]

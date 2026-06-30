@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import anthropic
 from backend.prompt_builder import build_character_prompt
-from backend.database import init_db, create_character, get_character, seed_default_character
+from backend.database import init_db, create_character_db, get_character, seed_default_character
 
 load_dotenv()
 
@@ -46,14 +46,35 @@ class CharacterRequest(BaseModel):
 
 @app.post("/character")
 def create_new_character(request: CharacterRequest):
-    char_id = create_character(
+    if not request.knowledge.strip():
+        raise HTTPException(status_code=400, detail="Knowledge base cannot be empty")
+    if not request.name.strip():
+        raise HTTPException(status_code=400, detail="Character name is required")
+
+    char_id = create_character_db(
         name=request.name,
         personality_traits=request.personality_traits,
         tone=request.tone,
         knowledge=request.knowledge,
         restrictions=request.restrictions
     )
-    return {"id": char_id}
+    return {
+        "id": char_id,
+        "chat_url": f"/chat/{char_id}",
+        "message": f"Character '{request.name}' created successfully"
+    }
+
+@app.get("/character/{character_id}")
+def get_character_details(character_id: str):
+    character = get_character(character_id)
+    if not character:
+        raise HTTPException(status_code=404, detail="Character not found")
+    return {
+        "id": character["id"],
+        "name": character["name"],
+        "tone": character["tone"],
+        "personality_traits": character["personality_traits"]
+    }
 
 @app.post("/chat/{character_id}")
 def chat(character_id: str, request: ChatRequest):
